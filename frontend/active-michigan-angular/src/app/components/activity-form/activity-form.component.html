@@ -1,0 +1,98 @@
+<form class="filters" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label for="title">Title</label>
+    <input
+      id="title"
+      name="title"
+      [(ngModel)]="form.title"
+      required
+    />
+  </div>
+
+  <div class="field">
+    <label for="formType">Type</label>
+    <select
+      id="formType"
+      name="type"
+      [(ngModel)]="form.type"
+    >
+      @for (t of TYPES; track t) {
+        <option [value]="t">
+          {{ t }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="formCity">City</label>
+    <input
+      id="formCity"
+      name="city"
+      [(ngModel)]="form.city"
+      required
+    />
+  </div>
+
+  <div class="field">
+    <label for="formRegion">Region</label>
+    <input
+      id="formRegion"
+      name="region"
+      [(ngModel)]="form.region"
+    />
+  </div>
+
+  <div class="field">
+    <label for="formStartsAt">Starts at</label>
+    <input
+      id="formStartsAt"
+      name="startsAt"
+      type="datetime-local"
+      [(ngModel)]="form.startsAt"
+      required
+    />
+  </div>
+
+  <div class="field">
+    <label for="formEndsAt">Ends at (optional)</label>
+    <input
+      id="formEndsAt"
+      name="endsAt"
+      type="datetime-local"
+      [(ngModel)]="form.endsAt"
+    />
+  </div>
+
+  <div class="field">
+    <label for="formWebsite">Website URL</label>
+    <input
+      id="formWebsite"
+      name="websiteUrl"
+      type="url"
+      [(ngModel)]="form.websiteUrl"
+      placeholder="https://example.org/event"
+    />
+  </div>
+
+  <div class="field fieldWide">
+    <label for="formDescription">Description</label>
+    <textarea
+      id="formDescription"
+      name="description"
+      rows="3"
+      [(ngModel)]="form.description"
+    ></textarea>
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="submitting">
+      {{ submitLabel }}
+    </button>
+    @if (showCancel) {
+      <button type="button" class="secondary" (click)="onCancel()">
+        Cancel
+      </button>
+    }
+  </div>
+</form>

@@ -1,0 +1,33 @@
+<section class="panel hero">
+  <h1>Outdoor activities across Michigan</h1>
+  <p>
+    Find runs, bike races, triathlons, hikes, paddle events, and more. Organizers can list and
+    manage events after signing in.
+  </p>
+  <div class="actions">
+    <a routerLink="/activities" class="buttonLink">
+      Browse activities
+    </a>
+    <a routerLink="/account" class="buttonLink secondary">
+      Sign in
+    </a>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="listHeader">
+    <h2>Upcoming highlights</h2>
+  </div>
+  @if (loading()) {
+    <p>Loading...</p>
+  } @else {
+    @if (preview().length === 0) {
+      <p>No activities yet.</p>
+    }
+    <div class="grid">
+      @for (activity of preview(); track activity.id) {
+        <app-activity-card [activity]="activity"></app-activity-card>
+      }
+    </div>
+  }
+</section>

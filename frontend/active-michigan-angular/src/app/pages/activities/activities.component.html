@@ -1,0 +1,147 @@
+<section class="panel">
+  <div class="listHeader">
+    <h2>Find activities</h2>
+    <p>Search by keyword, type, location, and date range</p>
+  </div>
+
+  <form class="filters" (ngSubmit)="onSearch()">
+    <div class="field">
+      <label for="q">Search</label>
+      <input
+        id="q"
+        name="q"
+        [(ngModel)]="q"
+        placeholder="e.g. half marathon, trails"
+      />
+    </div>
+
+    <div class="field">
+      <label for="type">Type</label>
+      <select id="type" name="type" [(ngModel)]="type">
+        <option value="">Any</option>
+        @for (t of TYPES; track t) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="city">City</label>
+      <input
+        id="city"
+        name="city"
+        [(ngModel)]="city"
+        placeholder="Ann Arbor"
+      />
+    </div>
+
+    <div class="field">
+      <label for="region">Region</label>
+      <input
+        id="region"
+        name="region"
+        [(ngModel)]="region"
+        placeholder="Southeast Michigan"
+      />
+    </div>
+
+    <div class="field">
+      <label for="from">From date</label>
+      <input id="from" name="from" type="date" [(ngModel)]="from" />
+    </div>
+
+    <div class="field">
+      <label for="to">To date</label>
+      <input id="to" name="to" type="date" [(ngModel)]="to" />
+    </div>
+
+    <div class="actions">
+      <button type="submit">Apply filters</button>
+      <button type="button" class="secondary" (click)="clearFilters()">
+        Clear
+      </button>
+      @if (authService.isAuthenticated()) {
+        <button
+          type="button"
+          class="secondary"
+          (click)="toggleCreate()"
+        >
+          {{ showCreate() ? 'Hide form' : 'Add activity' }}
+        </button>
+      }
+    </div>
+  </form>
+</section>
+
+@if (showCreate() && authService.isAuthenticated()) {
+  <section class="panel">
+    <div class="listHeader">
+      <h2>Add activity</h2>
+      <p>Requires organizer or admin account</p>
+    </div>
+    <app-activity-form
+      [form]="newActivity"
+      [submitting]="creating()"
+      submitLabel="Create activity"
+      (formSubmit)="onCreateActivity($event)"
+    ></app-activity-form>
+    @if (createMessage()) {
+      <p class="createMessage">{{ createMessage() }}</p>
+    }
+  </section>
+}
+
+@if (!authService.isAuthenticated()) {
+  <p class="tokenHint">
+    <a routerLink="/account">Sign in</a> as an organizer to add or edit activities.
+  </p>
+}
+
+<section class="panel">
+  <div class="listHeader">
+    <h2>Results</h2>
+    <p>{{ subtitle() }}</p>
+  </div>
+
+  @if (loading()) {
+    <p>Loading activities...</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (!loading() && !error() && activities().length === 0) {
+    <p>No activities matched your filters.</p>
+  }
+
+  <div class="grid">
+    @for (activity of activities(); track activity.id) {
+      <app-activity-card [activity]="activity"></app-activity-card>
+    }
+  </div>
+
+  @if (totalPages() > 1) {
+    <div class="pagination">
+      <button
+        type="button"
+        class="secondary"
+        [disabled]="page() <= 0 || loading()"
+        (click)="goToPage(page() - 1)"
+      >
+        Previous
+      </button>
+      <span>
+        Page {{ page() + 1 }} of {{ totalPages() }}
+      </span>
+      <button
+        type="button"
+        class="secondary"
+        [disabled]="page() >= totalPages() - 1 || loading()"
+        (click)="goToPage(page() + 1)"
+      >
+        Next
+      </button>
+    </div>
+  }
+</section>

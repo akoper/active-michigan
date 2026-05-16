@@ -1,0 +1,73 @@
+@if (loading()) {
+  <section class="panel">
+    <p>Loading activity...</p>
+  </section>
+}
+
+@if (error() || (!loading() && !activity())) {
+  <section class="panel">
+    <p class="error">{{ error() || 'Activity not found' }}</p>
+    <a routerLink="/activities" class="backLink">
+      ← Back to browse
+    </a>
+  </section>
+}
+
+@if (activity()) {
+  @let act = activity()!;
+  <section class="panel">
+    <a routerLink="/activities" class="backLink">
+      ← Back to browse
+    </a>
+
+    @if (!editing()) {
+      <div class="type">{{ act.type }}</div>
+      <h1 class="detailTitle">{{ act.title }}</h1>
+      <p class="meta">
+        {{ act.city }}
+        @if (act.region) {
+          , {{ act.region }}
+        }
+      </p>
+      <p class="meta">{{ formatWhen(act.startsAt, act.endsAt) }}</p>
+      @if (act.description) {
+        <p class="detailBody">{{ act.description }}</p>
+      }
+      @if (act.websiteUrl) {
+        <a [href]="act.websiteUrl" target="_blank" rel="noreferrer">
+          Event website
+        </a>
+      }
+
+      @if (authService.isAuthenticated()) {
+        <div class="detailActions">
+          <button type="button" (click)="toggleEdit()">
+            Edit
+          </button>
+          <button type="button" class="secondary danger" (click)="onDelete()">
+            Delete
+          </button>
+        </div>
+      }
+    } @else {
+      <h2>Edit activity</h2>
+      <app-activity-form
+        [form]="editForm"
+        [submitting]="saving()"
+        [showCancel]="true"
+        submitLabel="Save changes"
+        (formSubmit)="onUpdate($event)"
+        (cancel)="onCancelEdit()"
+      ></app-activity-form>
+    }
+
+    @if (message()) {
+      <p class="createMessage">{{ message() }}</p>
+    }
+    @if (!authService.isAuthenticated()) {
+      <p class="tokenHint">
+        <a routerLink="/account">Sign in</a> as an organizer to edit this activity.
+      </p>
+    }
+  </section>
+}

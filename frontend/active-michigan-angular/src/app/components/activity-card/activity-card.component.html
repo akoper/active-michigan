@@ -1,0 +1,21 @@
+<article class="card">
+  <div class="type">{{ activity.type }}</div>
+  <h3>
+    <a [routerLink]="['/activities', activity.id]" class="cardTitleLink">
+      {{ activity.title }}
+    </a>
+  </h3>
+  <p class="meta">
+    {{ activity.city }}
+    @if (activity.region) {
+      , {{ activity.region }}
+    }
+    · {{ formatWhen(activity.startsAt, activity.endsAt) }}
+  </p>
+  @if (activity.description) {
+    <p class="cardExcerpt">{{ activity.description }}</p>
+  }
+  <a [routerLink]="['/activities', activity.id]" class="cardMore">
+    View details →
+  </a>
+</article>
