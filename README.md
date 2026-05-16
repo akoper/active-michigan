@@ -45,6 +45,32 @@ npm start
 
 Web: http://localhost:4200
 
+### Deployment to GCP
+
+The project is configured for deployment to **Google Cloud Platform (GCP)** using **Cloud Run** and **Cloud Build**.
+
+**Prerequisites:**
+1. [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed and initialized (`gcloud init`).
+2. A GCP Project created and selected (`gcloud config set project [PROJECT_ID]`).
+3. Cloud Run and Cloud Build APIs enabled in your GCP project.
+
+**To deploy:**
+
+Run the following command from the project root:
+
+```bash
+gcloud builds submit --config cloudbuild.yaml .
+```
+
+This will:
+- Build Docker images for both backend and frontend.
+- Push them to Google Container Registry.
+- Deploy them as separate services to Cloud Run.
+
+**Post-deployment notes:**
+- The backend uses an in-memory H2 database by default. For persistence, configure a Cloud SQL instance in `backend/active-michigan-api/src/main/resources/application-prod.properties`.
+- The frontend is configured to use `/api` as the base URL. If you deploy them to different domains, you may need to update `environment.prod.ts` or configure a Load Balancer/Proxy.
+
 ### Seeded data (dev)
 
 On first startup the API seeds five sample Michigan activities and an admin account:
