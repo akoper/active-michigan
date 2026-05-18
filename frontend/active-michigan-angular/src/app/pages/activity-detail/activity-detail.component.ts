@@ -92,7 +92,7 @@ export class ActivityDetailComponent implements OnInit {
     this.message.set('');
     this.activityService.deleteActivity(current.id).subscribe({
       next: () => {
-        this.router.navigate(['/activities']);
+        this.router.navigate(['/account']);
       },
       error: (err) => {
         this.message.set(`Delete failed: ${err.message}`);

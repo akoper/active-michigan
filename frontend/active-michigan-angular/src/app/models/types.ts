@@ -10,6 +10,7 @@ export interface Activity {
   startsAt: string;
   endsAt: string | null;
   websiteUrl: string | null;
+  user?: User | null;
 }
 
 export interface ActivityPage {

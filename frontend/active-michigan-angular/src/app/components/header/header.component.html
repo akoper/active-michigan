@@ -15,9 +15,12 @@
         Register
       </a>
     } @else {
-      <button type="button" class="navLogout secondary" (click)="logout()">
+      <a routerLink="/account" routerLinkActive="active" (click)="closeNav()">
+        Account
+      </a>
+      <a (click)="logout()" style="cursor: pointer;">
         Sign out
-      </button>
+      </a>
     }
   </nav>
 </header>

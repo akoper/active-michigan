@@ -64,18 +64,6 @@
     @if (message()) {
       <p class="createMessage">{{ message() }}</p>
     }
-    @if (activity() && !activity()?.user) {
-      <p class="tokenHint">
-        This activity was created by a guest and cannot be edited.
-      </p>
-    } @else if (authService.isAuthenticated() && activity()?.user?.id !== authService.currentUser()?.id) {
-      <p class="tokenHint">
-        Only the creator of this activity can edit or delete it.
-      </p>
-    } @else if (!authService.isAuthenticated()) {
-      <p class="tokenHint">
-        <a routerLink="/account">Sign in</a> to manage your activities.
-      </p>
-    }
+
   </section>
 }

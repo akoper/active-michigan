@@ -59,11 +59,11 @@
       <button type="button" class="secondary" (click)="clearFilters()">
         Clear
       </button>
-      @if (authService.isAuthenticated()) {
-        <button type="button" class="secondary" (click)="toggleCreate()">
-          {{ showCreate() ? 'Cancel' : 'Add activity' }}
-        </button>
-      }
+<!--      @if (authService.isAuthenticated()) {-->
+<!--        <button type="button" class="secondary" (click)="toggleCreate()">-->
+<!--          {{ showCreate() ? 'Cancel' : 'Add activity' }}-->
+<!--        </button>-->
+<!--      }-->
     </div>
   </form>
 </section>
@@ -84,12 +84,6 @@
     }
   </section>
 }
-
-<!--@if (!authService.isAuthenticated()) {-->
-<!--  <p class="tokenHint">-->
-<!--    <a routerLink="/account">Sign in</a> as an organizer to add or edit activities.-->
-<!--  </p>-->
-<!--}-->
 
 <section class="panel">
   <div class="listHeader">

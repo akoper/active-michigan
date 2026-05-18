@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ActivityService } from '../../services/activity.service';
 import { AuthService } from '../../services/auth.service';
 import { Activity, ActivityForm, ActivityType } from '../../models/types';
@@ -11,7 +10,7 @@ import { ActivityFormComponent } from '../../components/activity-form/activity-f
 @Component({
   selector: 'app-activities',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ActivityCardComponent, ActivityFormComponent],
+  imports: [CommonModule, FormsModule, ActivityCardComponent, ActivityFormComponent],
   templateUrl: './activities.component.html',
   styleUrl: './activities.component.css'
 })
