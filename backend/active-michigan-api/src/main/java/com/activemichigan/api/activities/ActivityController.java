@@ -2,6 +2,10 @@ package com.activemichigan.api.activities;
 
 import java.time.Instant;
 
+import org.springframework.security.core.Authentication;
+import com.activemichigan.api.users.UserPrincipal;
+import com.activemichigan.api.users.AppUser;
+import com.activemichigan.api.users.AppUserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,9 +30,11 @@ import jakarta.validation.Valid;
 @Validated
 public class ActivityController {
 	private final ActivityRepository repo;
+	private final AppUserRepository userRepo;
 
-	public ActivityController(ActivityRepository repo) {
+	public ActivityController(ActivityRepository repo, AppUserRepository userRepo) {
 		this.repo = repo;
+		this.userRepo = userRepo;
 	}
 
 	@GetMapping
@@ -68,8 +74,12 @@ public class ActivityController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Activity create(@Valid @RequestBody Activity body) {
+	public Activity create(@Valid @RequestBody Activity body, Authentication auth) {
 		body.setId(null);
+		if (auth != null && auth.getPrincipal() instanceof UserPrincipal principal) {
+			AppUser user = userRepo.findById(principal.getId()).orElse(null);
+			body.setUser(user);
+		}
 		return repo.save(body);
 	}
 

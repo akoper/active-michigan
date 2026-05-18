@@ -9,6 +9,21 @@
     <div class="accountActions">
       <button type="button" class="button secondary" (click)="logout()">Sign out</button>
     </div>
+
+    <section class="panel" style="margin-top: 2rem; padding: 0;">
+      <div class="listHeader">
+        <h3>Create a new activity</h3>
+      </div>
+      <app-activity-form
+        [form]="newActivity"
+        [submitting]="creating()"
+        submitLabel="Create activity"
+        (formSubmit)="onCreateActivity($event)"
+      ></app-activity-form>
+      @if (createMessage()) {
+        <p class="createMessage">{{ createMessage() }}</p>
+      }
+    </section>
   } @else {
     <div class="actions">
       <a routerLink="/login" class="button">Sign in</a>

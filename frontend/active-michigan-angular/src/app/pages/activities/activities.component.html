@@ -1,7 +1,6 @@
 <section class="panel">
   <div class="listHeader">
     <h2>Find activities</h2>
-    <p>Search by keyword, type, location, and date range</p>
   </div>
 
   <form class="filters" (ngSubmit)="onSearch()">
@@ -60,15 +59,7 @@
       <button type="button" class="secondary" (click)="clearFilters()">
         Clear
       </button>
-      @if (authService.isAuthenticated()) {
-        <button
-          type="button"
-          class="secondary"
-          (click)="toggleCreate()"
-        >
-          {{ showCreate() ? 'Hide form' : 'Add activity' }}
-        </button>
-      }
+
     </div>
   </form>
 </section>

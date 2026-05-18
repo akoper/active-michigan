@@ -2,6 +2,9 @@ package com.activemichigan.api.activities;
 
 import java.time.Instant;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import com.activemichigan.api.users.AppUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,6 +65,10 @@ public class Activity {
 	@Size(max = 500)
 	@Column(length = 500)
 	private String websiteUrl;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private AppUser user;
 
 	public Long getId() {
 		return id;
@@ -133,6 +140,14 @@ public class Activity {
 
 	public void setWebsiteUrl(String websiteUrl) {
 		this.websiteUrl = websiteUrl;
+	}
+
+	public AppUser getUser() {
+		return user;
+	}
+
+	public void setUser(AppUser user) {
+		this.user = user;
 	}
 }
 

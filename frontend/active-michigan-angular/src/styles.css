@@ -282,6 +282,7 @@ button:disabled {
   color: #0f766e;
   text-decoration: none;
   font-weight: 600;
+  margin-right: 0.5rem;
 }
 
 .detailTitle {
