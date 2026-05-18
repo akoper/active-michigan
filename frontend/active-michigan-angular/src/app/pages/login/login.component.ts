@@ -12,8 +12,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  authEmail = signal('');
-  authPassword = signal('');
+  authEmail = '';
+  authPassword = '';
   authMessage = signal('');
 
   constructor(public authService: AuthService, private router: Router) {}
@@ -21,8 +21,8 @@ export class LoginComponent {
   onLogin() {
     this.authMessage.set('');
     const payload = {
-      email: this.authEmail(),
-      password: this.authPassword(),
+      email: this.authEmail,
+      password: this.authPassword,
     };
 
     this.authService.login(payload).subscribe({

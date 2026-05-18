@@ -16,28 +16,32 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.activemichigan.api.auth.JwtAuthenticationFilter;
+import com.activemichigan.api.auth.JwtService;
 import com.activemichigan.api.users.AppUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final AppUserDetailsService userDetailsService;
 
-	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AppUserDetailsService userDetailsService) {
-		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	public SecurityConfig(AppUserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService) {
+		return new JwtAuthenticationFilter(jwtService, userDetailsService);
+	}
+
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 		http
 				.cors(Customizer.withDefaults())
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/activities/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
 						.requestMatchers("/h2/**").permitAll()
 						.requestMatchers("/api/users/**").hasRole("ADMIN")

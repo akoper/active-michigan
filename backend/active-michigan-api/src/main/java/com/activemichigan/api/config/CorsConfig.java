@@ -16,7 +16,7 @@ public class CorsConfig {
 			@Value("${app.cors.allowed-origins}") String allowedOrigins
 	) {
 		var config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
+		config.setAllowedOriginPatterns(List.of(allowedOrigins.split(",")));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true);

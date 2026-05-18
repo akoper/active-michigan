@@ -13,9 +13,9 @@ import { UserRole } from '../../models/types';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  authEmail = signal('');
-  authPassword = signal('');
-  authDisplayName = signal('');
+  authEmail = '';
+  authPassword = '';
+  authDisplayName = '';
   authRole = signal<UserRole>('ORGANIZER');
   authMessage = signal('');
 
@@ -24,9 +24,9 @@ export class RegisterComponent {
   onRegister() {
     this.authMessage.set('');
     const payload = {
-      email: this.authEmail(),
-      password: this.authPassword(),
-      displayName: this.authDisplayName(),
+      email: this.authEmail,
+      password: this.authPassword,
+      displayName: this.authDisplayName,
       role: this.authRole(),
     };
 
