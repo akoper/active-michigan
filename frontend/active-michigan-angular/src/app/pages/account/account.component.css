@@ -2,3 +2,9 @@
   display: flex;
   margin-top: 1rem;
 }
+
+.welcomeMessage {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}

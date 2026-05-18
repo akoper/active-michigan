@@ -1,14 +1,12 @@
 <section class="panel">
   <div class="listHeader">
     <h2>Account</h2>
-    <p>Manage your activities and profile</p>
+    @if (authService.isAuthenticated() && authService.currentUser()) {
+      <p>Welcome, {{ authService.currentUser()?.displayName }} ({{ authService.currentUser()?.email }})!</p>
+    }
   </div>
 
   @if (authService.isAuthenticated()) {
-    <p class="tokenHint">You are signed in. Your session is saved in this browser.</p>
-    <div class="accountActions">
-      <button type="button" class="button secondary" (click)="logout()">Sign out</button>
-    </div>
 
     <section class="panel" style="margin-top: 2rem; padding: 0;">
       <div class="listHeader">

@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { AuthResponse, UserRole } from '../models/types';
@@ -16,7 +16,23 @@ export class AuthService {
 
   isAuthenticated = computed(() => !!this.token());
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (this.token()) {
+      this.fetchMe().subscribe({
+        error: () => this.logout()
+      });
+    }
+  }
+
+  fetchMe() {
+    return this.http.get<AuthResponse>(`${this.API_URL}/me`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      tap(res => {
+        this.currentUser.set({ ...res, token: this.token()! });
+      })
+    );
+  }
 
   register(payload: any) {
     return this.http.post<AuthResponse>(`${this.API_URL}/register`, payload).pipe(

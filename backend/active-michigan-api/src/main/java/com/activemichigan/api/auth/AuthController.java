@@ -5,6 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +79,13 @@ public class AuthController {
 		} catch (AuthenticationException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
 		}
+	}
+
+	@GetMapping("/me")
+	public AuthDtos.AuthResponse getCurrentUser(@AuthenticationPrincipal UserPrincipal principal) {
+		var user = users.findById(principal.getId())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+		return new AuthDtos.AuthResponse(null, user.getEmail(), user.getDisplayName(), user.getRole());
 	}
 }
 
