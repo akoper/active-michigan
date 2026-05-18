@@ -2,6 +2,8 @@ package com.activemichigan.api.activities;
 
 import java.time.Instant;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import com.activemichigan.api.users.UserPrincipal;
 import com.activemichigan.api.users.AppUser;
@@ -76,6 +78,7 @@ public class ActivityController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("isAuthenticated()")
 	public Activity create(@Valid @RequestBody Activity body, Authentication auth) {
 		body.setId(null);
 		if (auth != null && auth.getPrincipal() instanceof UserPrincipal principal) {
@@ -88,6 +91,7 @@ public class ActivityController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public Activity update(@PathVariable long id, @Valid @RequestBody Activity body, Authentication auth) {
 		var existing = repo.findById(id).orElseThrow(() -> new ActivityNotFoundException(id));
 
@@ -96,7 +100,7 @@ public class ActivityController {
 		}
 
 		if (existing.getUser() == null || !existing.getUser().getId().equals(principal.getId())) {
-			throw new org.springframework.security.access.AccessDeniedException("Not authorized to update this activity");
+			throw new AccessDeniedException("Not authorized to update this activity");
 		}
 
 		existing.setTitle(body.getTitle());
@@ -113,6 +117,7 @@ public class ActivityController {
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("isAuthenticated()")
 	public void delete(@PathVariable long id, Authentication auth) {
 		var existing = repo.findById(id).orElseThrow(() -> new ActivityNotFoundException(id));
 
@@ -121,7 +126,7 @@ public class ActivityController {
 		}
 
 		if (existing.getUser() == null || !existing.getUser().getId().equals(principal.getId())) {
-			throw new org.springframework.security.access.AccessDeniedException("Not authorized to delete this activity");
+			throw new AccessDeniedException("Not authorized to delete this activity");
 		}
 
 		repo.delete(existing);

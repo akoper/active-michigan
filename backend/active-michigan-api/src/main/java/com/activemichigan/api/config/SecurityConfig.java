@@ -7,8 +7,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ import com.activemichigan.api.users.AppUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 	private final AppUserDetailsService userDetailsService;
 
@@ -38,24 +41,23 @@ public class SecurityConfig {
 		http
 				.cors(Customizer.withDefaults())
 				.csrf(csrf -> csrf.disable())
+				.headers(headers -> headers
+						.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+						.contentSecurityPolicy(csp -> csp
+								.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8080 http://localhost:4200;")
+						)
+				)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/auth/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/activities/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
-						.requestMatchers("/h2/**").permitAll()
-						.requestMatchers("/api/users/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/api/activities/**").authenticated()
-						.requestMatchers(HttpMethod.PUT, "/api/activities/**").authenticated()
-						.requestMatchers(HttpMethod.DELETE, "/api/activities/**").authenticated()
+						.requestMatchers("/h2/**").hasRole("ADMIN")
 						.anyRequest().authenticated()
 				);
 
 		http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-		// H2 console uses iframes.
-		http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
 		return http.build();
 	}
