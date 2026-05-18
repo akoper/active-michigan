@@ -1,0 +1,58 @@
+<section class="panel">
+  <div class="listHeader">
+    <h2>Register</h2>
+    <p>Create an account to create and manage your activities</p>
+  </div>
+
+  @if (authService.isAuthenticated()) {
+    <p class="tokenHint">You are already signed in.</p>
+  } @else {
+    <form class="filters" (ngSubmit)="onRegister()">
+      <div class="field">
+        <label for="authEmail">Email</label>
+        <input
+          id="authEmail"
+          name="authEmail"
+          type="email"
+          [(ngModel)]="authEmail"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="authPassword">Password</label>
+        <input
+          id="authPassword"
+          name="authPassword"
+          type="password"
+          [(ngModel)]="authPassword"
+          required
+          minlength="8"
+        />
+      </div>
+
+      <div class="field">
+        <label for="authDisplayName">Display name</label>
+        <input
+          id="authDisplayName"
+          name="authDisplayName"
+          [(ngModel)]="authDisplayName"
+          required
+        />
+      </div>
+
+      <div class="actions">
+        <button type="submit">Register</button>
+      </div>
+    </form>
+  }
+
+  @if (authMessage()) {
+    <p class="createMessage">{{ authMessage() }}</p>
+  }
+
+  <p class="tokenHint">
+    Already have an account? <a routerLink="/login">Sign in here</a>.
+  </p>
+
+</section>

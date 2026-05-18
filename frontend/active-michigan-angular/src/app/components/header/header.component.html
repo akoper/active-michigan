@@ -7,10 +7,17 @@
     Menu
   </button>
   <nav class="navLinks" [class.open]="navOpen()">
-    <a routerLink="/account" routerLinkActive="active" (click)="closeNav()">
-      Account
-    </a>
-    @if (authService.isAuthenticated()) {
+    @if (!authService.isAuthenticated()) {
+      <a routerLink="/login" routerLinkActive="active" (click)="closeNav()">
+        Login
+      </a>
+      <a routerLink="/register" routerLinkActive="active" (click)="closeNav()">
+        Register
+      </a>
+    } @else {
+      <a routerLink="/account" routerLinkActive="active" (click)="closeNav()">
+        Account
+      </a>
       <button type="button" class="navLogout secondary" (click)="logout()">
         Sign out
       </button>

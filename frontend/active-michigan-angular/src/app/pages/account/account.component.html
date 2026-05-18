@@ -1,70 +1,16 @@
 <section class="panel">
   <div class="listHeader">
     <h2>Account</h2>
-    <p>Register or sign in to manage activities</p>
+    <p>Manage your activities and profile</p>
   </div>
 
   @if (authService.isAuthenticated()) {
     <p class="tokenHint">You are signed in. Your session is saved in this browser.</p>
-    <div class="actions">
-      <button type="button" class="secondary" (click)="onLogout()">
-        Sign out
-      </button>
-    </div>
   } @else {
-    <form class="filters" (ngSubmit)="onRegister()">
-      <div class="field">
-        <label for="authEmail">Email</label>
-        <input
-          id="authEmail"
-          name="authEmail"
-          type="email"
-          [(ngModel)]="authEmail"
-          required
-        />
-      </div>
-
-      <div class="field">
-        <label for="authPassword">Password</label>
-        <input
-          id="authPassword"
-          name="authPassword"
-          type="password"
-          [(ngModel)]="authPassword"
-          required
-          minlength="8"
-        />
-      </div>
-
-      <div class="field">
-        <label for="authDisplayName">Display name</label>
-        <input
-          id="authDisplayName"
-          name="authDisplayName"
-          [(ngModel)]="authDisplayName"
-          required
-        />
-      </div>
-
-      <div class="field">
-        <label for="authRole">Role (register only)</label>
-        <select
-          id="authRole"
-          name="authRole"
-          [(ngModel)]="authRole"
-        >
-          <option value="PARTICIPANT">PARTICIPANT</option>
-          <option value="ORGANIZER">ORGANIZER</option>
-        </select>
-      </div>
-
-      <div class="actions">
-        <button type="submit">Register</button>
-        <button type="button" class="secondary" (click)="onLogin()">
-          Sign in
-        </button>
-      </div>
-    </form>
+    <div class="actions">
+      <a routerLink="/login" class="button">Sign in</a>
+      <a routerLink="/register" class="button secondary">Register</a>
+    </div>
   }
 
   @if (authMessage()) {
