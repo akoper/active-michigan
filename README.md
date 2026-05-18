@@ -68,12 +68,15 @@ This will:
 - Deploy them as separate services to Cloud Run.
 
 **Post-deployment notes:**
-- The backend uses an in-memory H2 database by default. For persistence, configure a Cloud SQL instance in `backend/active-michigan-api/src/main/resources/application-prod.properties`.
+- The backend uses an in-memory H2 database by default, which is reset on every deployment or restart. For persistent storage in production, you should:
+    1. Create a **Cloud SQL** (PostgreSQL) instance.
+    2. Update `backend/active-michigan-api/src/main/resources/application-prod.properties` with the instance details or use environment variables.
+    3. Add the necessary Cloud SQL IAM permissions to the Cloud Run service account.
 - The frontend is configured to use `/api` as the base URL. If you deploy them to different domains, you may need to update `environment.prod.ts` or configure a Load Balancer/Proxy.
 
 ### Seeded data (dev)
 
-On first startup the API seeds five sample Michigan activities and an admin account:
+On first startup the API seeds several sample Michigan activities and an admin account:
 
 - **Email:** `admin@activemichigan.local`
 - **Password:** `admin12345`
