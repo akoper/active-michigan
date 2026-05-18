@@ -6,6 +6,9 @@
 
   @if (authService.isAuthenticated()) {
     <p class="tokenHint">You are signed in. Your session is saved in this browser.</p>
+    <div class="accountActions">
+      <button type="button" class="button secondary" (click)="logout()">Sign out</button>
+    </div>
   } @else {
     <div class="actions">
       <a routerLink="/login" class="button">Sign in</a>
@@ -17,9 +20,7 @@
     <p class="createMessage">{{ authMessage() }}</p>
   }
 
-  <p class="tokenHint devHint">
-    Dev admin: <code>admin&#64;activemichigan.local</code> / <code>admin12345</code>
-  </p>
+<!--  <p class="tokenHint devHint">-->
+<!--    Dev admin: <code>admin&#64;activemichigan.local</code> / <code>admin12345</code>-->
+<!--  </p>-->
 </section>
-
-<app-users-management></app-users-management>

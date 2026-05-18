@@ -33,7 +33,7 @@ export class RegisterComponent {
     this.authService.register(payload).subscribe({
       next: (res) => {
         this.authMessage.set(`Registered and signed in as ${res.email}`);
-        setTimeout(() => this.router.navigate(['/']), 1500);
+        setTimeout(() => this.router.navigate(['/account']), 1500);
       },
       error: (err) => {
         console.error('Registration error:', err);

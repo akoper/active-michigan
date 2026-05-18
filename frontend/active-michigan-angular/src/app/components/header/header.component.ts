@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent {
   navOpen = signal(false);
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   toggleNav() {
     this.navOpen.update(v => !v);
@@ -26,5 +26,6 @@ export class HeaderComponent {
   logout() {
     this.authService.logout();
     this.closeNav();
+    this.router.navigate(['/']);
   }
 }

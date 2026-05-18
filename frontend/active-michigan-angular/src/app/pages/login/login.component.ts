@@ -28,7 +28,7 @@ export class LoginComponent {
     this.authService.login(payload).subscribe({
       next: (res) => {
         this.authMessage.set(`Logged in as ${res.email}`);
-        setTimeout(() => this.router.navigate(['/']), 1500);
+        setTimeout(() => this.router.navigate(['/account']), 1500);
       },
       error: (err) => {
         console.error('Login error:', err);
