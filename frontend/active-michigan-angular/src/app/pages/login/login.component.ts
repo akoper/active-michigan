@@ -34,6 +34,8 @@ export class LoginComponent {
         console.error('Login error:', err);
         if (err.status === 0) {
           this.authMessage.set('Login failed: Cannot connect to the server. Please ensure the backend is running.');
+        } else if (err.status === 401) {
+          this.authMessage.set('Login failed: Invalid email or password.');
         } else {
           this.authMessage.set(`Login failed: ${err.error?.message || err.message}`);
         }

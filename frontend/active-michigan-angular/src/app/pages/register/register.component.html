@@ -15,8 +15,19 @@
           name="authEmail"
           type="email"
           [(ngModel)]="authEmail"
+          #emailModel="ngModel"
           required
         />
+        @if (emailModel.invalid && (emailModel.dirty || emailModel.touched)) {
+          <div class="error-hint">
+            @if (emailModel.errors?.['required']) {
+              <span>Email is required.</span>
+            }
+            @if (emailModel.errors?.['email']) {
+              <span>Please enter a valid email address.</span>
+            }
+          </div>
+        }
       </div>
 
       <div class="field">
@@ -26,9 +37,20 @@
           name="authPassword"
           type="password"
           [(ngModel)]="authPassword"
+          #passwordModel="ngModel"
           required
           minlength="8"
         />
+        @if (passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)) {
+          <div class="error-hint">
+            @if (passwordModel.errors?.['required']) {
+              <span>Password is required.</span>
+            }
+            @if (passwordModel.errors?.['minlength']) {
+              <span>Password must be at least 8 characters long.</span>
+            }
+          </div>
+        }
       </div>
 
       <div class="field">
@@ -37,8 +59,16 @@
           id="authDisplayName"
           name="authDisplayName"
           [(ngModel)]="authDisplayName"
+          #displayNameModel="ngModel"
           required
         />
+        @if (displayNameModel.invalid && (displayNameModel.dirty || displayNameModel.touched)) {
+          <div class="error-hint">
+            @if (displayNameModel.errors?.['required']) {
+              <span>Display name is required.</span>
+            }
+          </div>
+        }
       </div>
 
       <div class="actions">
@@ -48,7 +78,10 @@
   }
 
   @if (authMessage()) {
-    <p class="createMessage">{{ authMessage() }}</p>
+    <p [class.createMessage]="!authMessage().toLowerCase().includes('failed')"
+       [class.error]="authMessage().toLowerCase().includes('failed')">
+      {{ authMessage() }}
+    </p>
   }
 
   <p class="tokenHint">

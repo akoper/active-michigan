@@ -1,6 +1,6 @@
 <section class="panel">
   <div class="listHeader">
-    <h2>Sign In</h2>
+    <h2>Login</h2>
     <p>Sign in to create and manage your activities</p>
   </div>
 
@@ -37,7 +37,10 @@
   }
 
   @if (authMessage()) {
-    <p class="createMessage">{{ authMessage() }}</p>
+    <p [class.createMessage]="!authMessage().toLowerCase().includes('failed')"
+       [class.error]="authMessage().toLowerCase().includes('failed')">
+      {{ authMessage() }}
+    </p>
   }
 
   <p class="tokenHint">

@@ -124,8 +124,10 @@ body {
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
-  padding-bottom: 1.5rem;
-  padding-top: .5rem;
+}
+
+.filters .actions {
+  margin-bottom: 1px;
 }
 
 button {
@@ -211,6 +213,12 @@ button:disabled {
 .createMessage {
   margin-top: 0.75rem;
   color: #0f766e;
+}
+
+.error-hint {
+  color: #dc2626;
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
 }
 
 .tokenHint {
@@ -322,8 +330,13 @@ button.danger {
     flex-wrap: wrap;
   }
 
+  .brand {
+    font-size: 1.5rem;
+  }
+
   .menuBtn {
     display: inline-flex;
+    padding: 0.5rem;
   }
 
   .navLinks {
