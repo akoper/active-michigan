@@ -79,15 +79,25 @@ public class ActivityController {
 	public Activity create(@Valid @RequestBody Activity body, Authentication auth) {
 		body.setId(null);
 		if (auth != null && auth.getPrincipal() instanceof UserPrincipal principal) {
-			AppUser user = userRepo.findById(principal.getId()).orElse(null);
+			AppUser user = userRepo.findById(principal.getId()).orElseThrow();
 			body.setUser(user);
+		} else {
+			throw new IllegalStateException("Authentication required to create activity");
 		}
 		return repo.save(body);
 	}
 
 	@PutMapping("/{id}")
-	public Activity update(@PathVariable long id, @Valid @RequestBody Activity body) {
+	public Activity update(@PathVariable long id, @Valid @RequestBody Activity body, Authentication auth) {
 		var existing = repo.findById(id).orElseThrow(() -> new ActivityNotFoundException(id));
+
+		if (auth == null || !(auth.getPrincipal() instanceof UserPrincipal principal)) {
+			throw new IllegalStateException("Authentication required");
+		}
+
+		if (existing.getUser() == null || !existing.getUser().getId().equals(principal.getId())) {
+			throw new org.springframework.security.access.AccessDeniedException("Not authorized to update this activity");
+		}
 
 		existing.setTitle(body.getTitle());
 		existing.setDescription(body.getDescription());
@@ -103,11 +113,18 @@ public class ActivityController {
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable long id) {
-		if (!repo.existsById(id)) {
-			throw new ActivityNotFoundException(id);
+	public void delete(@PathVariable long id, Authentication auth) {
+		var existing = repo.findById(id).orElseThrow(() -> new ActivityNotFoundException(id));
+
+		if (auth == null || !(auth.getPrincipal() instanceof UserPrincipal principal)) {
+			throw new IllegalStateException("Authentication required");
 		}
-		repo.deleteById(id);
+
+		if (existing.getUser() == null || !existing.getUser().getId().equals(principal.getId())) {
+			throw new org.springframework.security.access.AccessDeniedException("Not authorized to delete this activity");
+		}
+
+		repo.delete(existing);
 	}
 }
 

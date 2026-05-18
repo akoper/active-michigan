@@ -39,7 +39,7 @@
         </a>
       }
 
-      @if (authService.isAuthenticated()) {
+      @if (authService.isAuthenticated() && activity()?.user?.id === authService.currentUser()?.id) {
         <div class="detailActions">
           <button type="button" (click)="toggleEdit()">
             Edit
@@ -64,9 +64,17 @@
     @if (message()) {
       <p class="createMessage">{{ message() }}</p>
     }
-    @if (!authService.isAuthenticated()) {
+    @if (activity() && !activity()?.user) {
       <p class="tokenHint">
-        <a routerLink="/account">Sign in</a> as an organizer to edit this activity.
+        This activity was created by a guest and cannot be edited.
+      </p>
+    } @else if (authService.isAuthenticated() && activity()?.user?.id !== authService.currentUser()?.id) {
+      <p class="tokenHint">
+        Only the creator of this activity can edit or delete it.
+      </p>
+    } @else if (!authService.isAuthenticated()) {
+      <p class="tokenHint">
+        <a routerLink="/account">Sign in</a> to manage your activities.
       </p>
     }
   </section>
