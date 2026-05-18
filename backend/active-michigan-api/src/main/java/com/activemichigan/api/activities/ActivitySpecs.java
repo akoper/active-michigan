@@ -16,7 +16,8 @@ public final class ActivitySpecs {
 			String city,
 			String region,
 			Instant from,
-			Instant to
+			Instant to,
+			Long userId
 	) {
 		return (root, query, cb) -> {
 			var predicates = new java.util.ArrayList<Predicate>();
@@ -46,6 +47,10 @@ public final class ActivitySpecs {
 			}
 			if (to != null) {
 				predicates.add(cb.lessThanOrEqualTo(root.get("startsAt"), to));
+			}
+
+			if (userId != null) {
+				predicates.add(cb.equal(root.get("user").get("id"), userId));
 			}
 
 			return cb.and(predicates.toArray(Predicate[]::new));

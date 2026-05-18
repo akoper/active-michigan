@@ -10,6 +10,44 @@
 
     <section class="panel" style="margin-top: 2rem; padding: 0;">
       <div class="listHeader">
+        <h3>My activities</h3>
+      </div>
+      <div style="padding: 1rem;">
+        @if (loadingActivities()) {
+          <p>Loading activities...</p>
+        } @else if (userActivities().length === 0) {
+          <p>You haven't created any activities yet.</p>
+        } @else {
+          <table class="activities-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>City</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (activity of userActivities(); track activity.id) {
+                <tr>
+                  <td>{{ activity.title }}</td>
+                  <td>{{ activity.type }}</td>
+                  <td>{{ activity.city }}</td>
+                  <td>{{ activity.startsAt | date:'short' }}</td>
+                  <td>
+                    <a [routerLink]="['/activities', activity.id]" class="button small">View</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top: 2rem; padding: 0;">
+      <div class="listHeader">
         <h3>Create a new activity</h3>
       </div>
       <app-activity-form

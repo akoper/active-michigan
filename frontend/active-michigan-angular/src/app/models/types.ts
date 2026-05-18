@@ -37,6 +37,7 @@ export interface AuthResponse {
   email: string;
   role: UserRole;
   displayName: string;
+  id: number;
 }
 
 export interface User {

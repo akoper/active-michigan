@@ -29,7 +29,8 @@ public final class AuthDtos {
 			String token,
 			String email,
 			String displayName,
-			UserRole role
+			UserRole role,
+			Long id
 	) {
 	}
 }

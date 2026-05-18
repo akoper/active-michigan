@@ -8,3 +8,43 @@
   font-size: 1.1rem;
   color: var(--text-secondary);
 }
+
+.activities-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.activities-table th,
+.activities-table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.activities-table th {
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.activities-table tr:last-child td {
+  border-bottom: none;
+}
+
+.button.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.button {
+  display: inline-block;
+  text-decoration: none;
+  border: 1px solid #0f766e;
+  background: #0f766e;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}

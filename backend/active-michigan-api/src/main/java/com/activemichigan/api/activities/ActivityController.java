@@ -45,6 +45,7 @@ public class ActivityController {
 			@RequestParam(required = false) String region,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+			@RequestParam(required = false) Long userId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size
 	) {
@@ -61,7 +62,8 @@ public class ActivityController {
 						city,
 						region,
 						from,
-						to
+						to,
+						userId
 				),
 				pageable
 		);

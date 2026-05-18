@@ -60,7 +60,7 @@ public class AuthController {
 		var saved = users.save(user);
 
 		String token = jwtService.generateToken(saved.getEmail(), saved.getRole().name());
-		return new AuthDtos.AuthResponse(token, saved.getEmail(), saved.getDisplayName(), saved.getRole());
+		return new AuthDtos.AuthResponse(token, saved.getEmail(), saved.getDisplayName(), saved.getRole(), saved.getId());
 	}
 
 	@PostMapping("/login")
@@ -75,7 +75,7 @@ public class AuthController {
 					.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
 			String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
-			return new AuthDtos.AuthResponse(token, user.getEmail(), user.getDisplayName(), user.getRole());
+			return new AuthDtos.AuthResponse(token, user.getEmail(), user.getDisplayName(), user.getRole(), user.getId());
 		} catch (AuthenticationException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
 		}
@@ -85,7 +85,7 @@ public class AuthController {
 	public AuthDtos.AuthResponse getCurrentUser(@AuthenticationPrincipal UserPrincipal principal) {
 		var user = users.findById(principal.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-		return new AuthDtos.AuthResponse(null, user.getEmail(), user.getDisplayName(), user.getRole());
+		return new AuthDtos.AuthResponse(null, user.getEmail(), user.getDisplayName(), user.getRole(), user.getId());
 	}
 }
 
