@@ -1,5 +1,5 @@
 <section class="panel hero">
-  <img src="/active-michigan-homepage-image.jpeg" alt="Outdoor activities across Michigan" class="heroImage">
+<!--  <img src="/active-michigan-homepage-image.jpeg" alt="Outdoor activities across Michigan" class="heroImage">-->
   <p>
     Find running races, bike races, triathlons, hikes, paddle events and other active outdoor events in Michigan.
   </p>
@@ -9,28 +9,7 @@
   </p>
   <div class="actions">
     <a routerLink="/activities" class="buttonLink">
-      Browse activities
-    </a>
-    <a routerLink="/account" class="buttonLink secondary">
-      Sign in
+      Search activities
     </a>
   </div>
-</section>
-
-<section class="panel">
-  <div class="listHeader">
-    <h2>Upcoming highlights</h2>
-  </div>
-  @if (loading()) {
-    <p>Loading...</p>
-  } @else {
-    @if (preview().length === 0) {
-      <p>No activities yet.</p>
-    }
-    <div class="grid">
-      @for (activity of preview(); track activity.id) {
-        <app-activity-card [activity]="activity"></app-activity-card>
-      }
-    </div>
-  }
 </section>

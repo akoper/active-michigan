@@ -35,7 +35,12 @@ export class AccountComponent {
         this.authMessage.set(`Registered and signed in as ${res.email} (${res.role})`);
       },
       error: (err) => {
-        this.authMessage.set(`Register failed: ${err.message}`);
+        console.error('Registration error:', err);
+        if (err.status === 0) {
+          this.authMessage.set('Register failed: Cannot connect to the server at http://localhost:8080. Please ensure the backend is running.');
+        } else {
+          this.authMessage.set(`Register failed: ${err.error?.message || err.message}`);
+        }
       }
     });
   }
@@ -52,7 +57,12 @@ export class AccountComponent {
         this.authMessage.set(`Logged in as ${res.email} (${res.role})`);
       },
       error: (err) => {
-        this.authMessage.set(`Login failed: ${err.message}`);
+        console.error('Login error:', err);
+        if (err.status === 0) {
+          this.authMessage.set('Login failed: Cannot connect to the server. Please ensure the backend is running.');
+        } else {
+          this.authMessage.set(`Login failed: ${err.error?.message || err.message}`);
+        }
       }
     });
   }

@@ -83,7 +83,12 @@ export class ActivitiesComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.error.set(`Could not load activities: ${err.message}`);
+        console.error('Activities load error:', err);
+        if (err.status === 0) {
+          this.error.set(`Could not load activities: Cannot connect to the server at http://localhost:8080. Please ensure the backend is running and CORS is configured correctly.`);
+        } else {
+          this.error.set(`Could not load activities: ${err.error?.message || err.message}`);
+        }
         this.loading.set(false);
       }
     });
