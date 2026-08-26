@@ -49,9 +49,11 @@ public class SecurityConfig {
 				)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/api/auth/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/activities/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+						.requestMatchers("/error").permitAll()
 						.requestMatchers("/h2/**").hasRole("ADMIN")
 						.anyRequest().authenticated()
 				);
